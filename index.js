@@ -58,12 +58,12 @@ Use the higher-order function getWinners to do the following:
 
 //ONLY LOOK AT NUMBER OF GOALS SCORED - DO NOT CARE ABOUT THE WIN CONDITIONS
 //receives 2 parameters - an array and getFinalscb
-function getWinners(/* code here */) {
-    /* code here */
+function getWinners(array, getFinalscb) {
+    return getFinalscb(array).map(item => item['Home Team Goals'] > item['Away Team Goals'] ? item['Home Team Name'] : item['Away Team Name'])
     //use map
     //use a conditional: if home team goals > away team goals then we want the home team name, else we want the away team name.
 }
-
+console.log('task 4:', getWinners(fifaData, getFinals));
 
 
 /* 🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀 Task 5: 🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀 
@@ -77,12 +77,16 @@ Use the higher-order function getWinnersByYear to do the following:
 hint: the strings returned need to exactly match the string in step 4.
  */
 //getting 4 parameters here -- array, getFinalscb, getYearscb, getWinnerscb
-function getWinnersByYear(/* code here */) {
-    /* code here */
-    //use map - map over one array and grab each item and then use the index to grab the item in the other array
+function getWinnersByYear(array, getFinalscb, getYearscb, getWinnerscb) {
+    const winners = getWinnerscb(array, getFinalscb);
+    const years = getYearscb(array, getFinalscb);
+
+    const string = winners.map(function(item, index){
+        return `In ${years[index]}, ${item} won the world cup!`;
+    });
+    return string;
 }
-
-
+console.log('task 5', getWinnersByYear(fifaData, getFinals, getYears, getWinners));
 
 /* 🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀 Task 6: 🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀
 Use the higher order function getAverageGoals to do the following: 
@@ -94,15 +98,17 @@ Use the higher order function getAverageGoals to do the following:
  Example of invocation: getAverageGoals(getFinals(fifaData));
 */
 //receive getFinalscb
-function getAverageGoals(/* code here */) {
-   /* code here */
+function getAverageGoals(getFinalscb) {
+   const averageGoals = getFinalscb.reduce(function(acc, item) {
+    return acc + item['Home Team Goals'] + item['Away Team Goals'];
+   },0);
+   return (averageGoals / getFinalscb.length).toFixed(2);
    //use .reduce to add up all the goals of the home and away team
-
    //then divide that number by the length of the array
    //round to 2 decimal places ** hint - look up toFixed() for this
 }
 
-//getAverageGoals(getFinals(fifaData));
+console.log(getAverageGoals(getFinals(fifaData)));
 
 
 /// 🥅 STRETCH 🥅 ///
